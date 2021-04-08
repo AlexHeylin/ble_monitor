@@ -105,7 +105,7 @@ except IndexError:
     BT_HCI_INTERFACES = [0]
     BT_MAC_INTERFACES = ['00:00:00:00:00:00']
     _LOGGER.error("No Bluetooth interface found. Make sure Bluetooth is installed on your system")
-    
+
 DEVICE_SCHEMA = vol.Schema(
     {
         vol.Optional(CONF_MAC): cv.matches_regex(MAC_REGEX),
@@ -454,6 +454,9 @@ class HCIdump(Thread):
         def obj0300(xobj):
             return {"motion": xobj[0], "motion timer": xobj[0]}
 
+        def obj1000(xobj):
+            return {"toothbrush mode": xobj[1]}
+
         def obj0f00(xobj):
             if len(xobj) == 3:
                 (value,) = LIGHT_STRUCT.unpack(xobj + b'\x00')
@@ -652,6 +655,7 @@ class HCIdump(Thread):
         # dataObject id  (converter, binary, measuring)
         self._dataobject_dict = {
             b'\x03\x00': (obj0300, True, False),
+            b'\x10\x00': (obj1000, False, True),
             b'\x0F\x00': (obj0f00, True, True),
             b'\x01\x10': (obj0110, False, True),
             b'\x04\x10': (obj0410, False, True),
