@@ -242,7 +242,6 @@ class BLEupdater():
                     if button.ready_for_update is True:
                         button.rssi_values = rssi[mac].copy()
                         button.async_schedule_update_ha_state(True)
-                        rssi[mac].clear()
                         button.pending_update = False
                 if "toothbrush mode" in data and (to_i != 9):
                     toothbrushmode = sensors[to_i]
@@ -251,7 +250,6 @@ class BLEupdater():
                     if toothbrushmode.ready_for_update is True:
                         toothbrushmode.rssi_values = rssi[mac].copy()
                         toothbrushmode.async_schedule_update_ha_state(True)
-                        rssi[mac].clear()
                         toothbrushmode.pending_update = False
                 if self.batt_entities:
                     if "voltage" in data and (v_i != 9):
